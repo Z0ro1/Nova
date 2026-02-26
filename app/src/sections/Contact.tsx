@@ -20,7 +20,7 @@ interface ContactCard {
 const contactCards: ContactCard[] = [
   {
     icon: Mail,
-    title: "Email",
+    title: "Emai",
     value: "sauravahire15@gmail.com",
     href: "mailto:sauravahire15@gmail.com",
   },
@@ -104,7 +104,7 @@ const Contact = () => {
           {/* Contact Cards */}
           <motion.div
             style={{ opacity: headerOpacity }}
-            className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6"
+            className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-fr"
           >
             {contactCards.map((card, index) => (
               <ContactCardComponent
@@ -135,7 +135,6 @@ const Contact = () => {
       {/* Premium Footer */}
       <footer className="relative z-10 w-full px-6 lg:px-12 pb-10">
         <div className="max-w-7xl mx-auto">
-          {/* Divider */}
           <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent mb-8" />
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-nova-muted">
@@ -176,22 +175,27 @@ const ContactCardComponent = ({ card, index }: ContactCardProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 + 0.3, duration: 0.6 }}
       viewport={{ once: true }}
-      className="group card-nova p-6 lg:p-8 text-left transition-all duration-500 hover:-translate-y-2 hover:border-white/12 cursor-pointer"
+      className="group card-nova p-6 lg:p-8 h-full flex flex-col justify-between
+                 text-left transition-all duration-500 
+                 hover:-translate-y-2 hover:border-white/12 
+                 cursor-pointer"
     >
-      <div className="flex items-start justify-between mb-4">
-        <div className="w-10 h-10 rounded-lg bg-nova-purple/10 flex items-center justify-center group-hover:bg-nova-purple/20 transition-colors">
-          <Icon size={20} className="text-nova-purple" />
+      <div>
+        <div className="flex items-start justify-between mb-4">
+          <div className="w-10 h-10 rounded-lg bg-nova-purple/10 flex items-center justify-center group-hover:bg-nova-purple/20 transition-colors">
+            <Icon size={20} className="text-nova-purple" />
+          </div>
+          <ArrowUpRight
+            size={20}
+            className="text-nova-muted opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          />
         </div>
-        <ArrowUpRight
-          size={20}
-          className="text-nova-muted opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-        />
-      </div>
 
-      <p className="text-nova-muted text-sm mb-1">{card.title}</p>
-      <p className="font-display text-lg text-nova-text group-hover:text-nova-purple transition-colors">
-        {card.value}
-      </p>
+        <p className="text-nova-muted text-sm mb-1">{card.title}</p>
+        <p className="font-display text-lg text-nova-text group-hover:text-nova-purple transition-colors">
+          {card.value}
+        </p>
+      </div>
     </motion.a>
   );
 };
