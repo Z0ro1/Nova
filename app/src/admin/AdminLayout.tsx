@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { LayoutDashboard, FileText, FolderKanban, Share2 } from "lucide-react";
 
-import HeroEditor from "./HeroEditor";
 import AboutEditor from "./AboutEditor";
 import ProjectsEditor from "./ProjectsEditor";
 import SocialsEditor from "./SocialsEditor";
@@ -49,7 +48,7 @@ const AdminLayout = () => {
 
       {/* Content */}
       <main className="flex-1 p-12 overflow-y-auto">
-        {active === "hero" && <HeroEditor />}
+      
         {active === "about" && <AboutEditor />}
         {active === "projects" && <ProjectsEditor />}
         {active === "socials" && <SocialsEditor />}
