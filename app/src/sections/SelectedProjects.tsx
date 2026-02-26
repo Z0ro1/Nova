@@ -5,30 +5,38 @@ import { ArrowUpRight } from "lucide-react";
 interface Project {
   title: string;
   description: string;
-  tags: string[];
+  tag1: string;
+  tag2: string;
+  tag3: string;
   image: string;
-  href: string; // Added
+  href: string;
 }
 
 const projects: Project[] = [
   {
     title: "EduCore",
     description: "Academic CRM",
-    tags: ["UI Design", "Dashboard", "Data visualization"],
+    tag1: "UI Design",
+    tag2: "Dashboard",
+    tag3: "Data Visualization",
     image: "/images/project-dashboard.jpg",
     href: "https://google.com",
   },
   {
     title: "Entome",
     description: "Employee Management Application · UI System",
-    tags: ["UI Design", "Dashboard", "Internal Tool"],
+    tag1: "UI Design",
+    tag2: "Dashboard",
+    tag3: "Internal Tool",
     image: "/images/project-mobile.jpg",
     href: "https://google.com",
   },
   {
     title: "Entolic System",
     description: "Corporate Website · UI Design",
-    tags: ["UI Design", "Web Interface", "Responsive Design"],
+    tag1: "UI Design",
+    tag2: "Web Interface",
+    tag3: "Responsive Design",
     image: "/images/Gemini_Generated_Image_yecu7cyecu7cyecu.png",
     href: "https://google.com",
   },
@@ -105,9 +113,7 @@ const ProjectItem = ({ project, index }: ProjectItemProps) => {
     <motion.div
       ref={itemRef}
       style={{ y: itemY, opacity: itemOpacity, scale: itemScale }}
-      className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center ${
-        isReversed ? "lg:flex-row-reverse" : ""
-      }`}
+      className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center"
     >
       {/* Image */}
       <div className={`${isReversed ? "lg:order-2" : ""}`}>
@@ -125,7 +131,6 @@ const ProjectItem = ({ project, index }: ProjectItemProps) => {
             />
           </div>
 
-          {/* Hover overlay */}
           <div className="absolute inset-0 bg-nova-purple/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </a>
       </div>
@@ -147,7 +152,7 @@ const ProjectItem = ({ project, index }: ProjectItemProps) => {
 
           {/* Tags */}
           <div className="flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
+            {[project.tag1, project.tag2, project.tag3].map((tag) => (
               <span
                 key={tag}
                 className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm text-nova-muted"

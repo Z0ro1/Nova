@@ -4,7 +4,9 @@ type Project = {
   id: number;
   title: string;
   description: string;
-  tags: string;
+  tag1: string;
+  tag2: string;
+  tag3: string;
   image: string;
   href: string;
 };
@@ -22,53 +24,56 @@ const initialProjects: Project[] = [
     id: 1,
     title: "EduCore",
     description: "Academic CRM",
-    tags: "UI Design, Dashboard, Data visualization",
+    tag1: "UI Design",
+    tag2: "Dashboard",
+    tag3: "Data Visualization",
     image: "/images/project-dashboard.jpg",
-    href: "https://google.com" // ADD THIS LINE
+    href: "https://google.com",
   },
   {
     id: 2,
     title: "Entome",
     description: "Employee Management Application · UI System",
-    tags: "UI Design, Dashboard, Internal Tool",
+    tag1: "UI Design",
+    tag2: "Dashboard",
+    tag3: "Internal Tool",
     image: "/images/project-mobile.jpg",
-    href: "https://google.com"// ADD THIS LINE
+    href: "https://google.com",
   },
   {
     id: 3,
     title: "Entolic System",
     description: "Corporate Website · UI Design",
-    tags: "UI Design, Web Interface, Responsive Design",
+    tag1: "UI Design",
+    tag2: "Web Interface",
+    tag3: "Responsive Design",
     image: "/images/Gemini_Generated_Image_yecu7cyecu7cyecu.png",
-    href: "https://google.com" // ADD THIS LINE
+    href: "https://google.com",
   },
 ];
 
 const ProjectsEditor = () => {
   const [projects, setProjects] = useState<Project[]>(initialProjects);
 
-  const updateProject = (
-    id: number,
-    field: keyof Project,
-    value: string
-  ) => {
+  const updateProject = (id: number, field: keyof Project, value: string) => {
     setProjects((prev) =>
-      prev.map((p) =>
-        p.id === id ? { ...p, [field]: value } : p
-      )
+      prev.map((p) => (p.id === id ? { ...p, [field]: value } : p))
     );
+  };
+
+  const handleImageUpload = (id: number, file: File) => {
+    const imageUrl = URL.createObjectURL(file);
+    updateProject(id, "image", imageUrl);
   };
 
   const handleSave = () => {
     console.log("Updated Projects:", projects);
-    alert("Projects updated");
+    alert("Projects updated 🚀");
   };
 
   return (
     <div className="max-w-5xl">
-      <h1 className="text-3xl font-display font-bold mb-8">
-        Edit Projects
-      </h1>
+      <h1 className="text-3xl font-display font-bold mb-8">Edit Projects</h1>
 
       <div className="space-y-6">
         {projects.map((project, index) => (
@@ -76,7 +81,6 @@ const ProjectsEditor = () => {
             key={project.id}
             className="bg-white/5 p-6 rounded-2xl border border-white/5 space-y-4"
           >
-            {/* Project Heading */}
             <h2 className="text-lg font-semibold text-nova-purple mb-2">
               Project {String(index + 1).padStart(2, "0")}
             </h2>
@@ -98,18 +102,64 @@ const ProjectsEditor = () => {
             />
 
             <Input
-              label="Tags (comma separated)"
-              value={project.tags}
+              label="Tag 1"
+              value={project.tag1}
               onChange={(e) =>
-                updateProject(project.id, "tags", e.target.value)
+                updateProject(project.id, "tag1", e.target.value)
               }
             />
 
             <Input
-              label="Image Path"
-              value={project.image}
+              label="Tag 2"
+              value={project.tag2}
               onChange={(e) =>
-                updateProject(project.id, "image", e.target.value)
+                updateProject(project.id, "tag2", e.target.value)
+              }
+            />
+
+            <Input
+              label="Tag 3"
+              value={project.tag3}
+              onChange={(e) =>
+                updateProject(project.id, "tag3", e.target.value)
+              }
+            />
+
+            {/* Image Upload */}
+            <div>
+              <label className="block text-sm text-nova-muted mb-2">
+                Upload Image
+              </label>
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleImageUpload(project.id, file);
+                }}
+                className="block w-full text-sm text-nova-muted
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-xl file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-nova-purple file:text-white
+                  hover:file:bg-purple-600"
+              />
+
+              {project.image && (
+                <img
+                  src={project.image}
+                  alt="Preview"
+                  className="mt-4 rounded-xl w-48 h-28 object-cover border border-white/10"
+                />
+              )}
+            </div>
+
+            <Input
+              label="Project Link (href)"
+              value={project.href}
+              onChange={(e) =>
+                updateProject(project.id, "href", e.target.value)
               }
             />
           </div>
@@ -125,9 +175,7 @@ const ProjectsEditor = () => {
 
 const Input = ({ label, ...props }: InputProps) => (
   <div>
-    <label className="block text-sm text-nova-muted mb-2">
-      {label}
-    </label>
+    <label className="block text-sm text-nova-muted mb-2">{label}</label>
     <input
       {...props}
       className="w-full bg-nova-dark border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-nova-purple transition"
@@ -137,9 +185,7 @@ const Input = ({ label, ...props }: InputProps) => (
 
 const Textarea = ({ label, ...props }: TextareaProps) => (
   <div>
-    <label className="block text-sm text-nova-muted mb-2">
-      {label}
-    </label>
+    <label className="block text-sm text-nova-muted mb-2">{label}</label>
     <textarea
       rows={3}
       {...props}

@@ -11,14 +11,12 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen bg-nova-dark overflow-hidden flex items-center select-none">
-      
       {/* Background Gradient */}
       <div className="absolute inset-0 bg-gradient-radial-purple pointer-events-none" />
 
       {/* CONTENT (kept above robot) */}
       <div className="relative z-10 w-full px-6 lg:px-12">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-1 items-center gap-16">
-          
           {/* LEFT TEXT */}
           <div className="max-w-2xl">
             <h1 className="font-display text-hero font-bold text-nova-text leading-[1.05] tracking-tight">
@@ -44,15 +42,11 @@ const Hero = () => {
                 />
               </button>
 
-              <button
-                onClick={scrollToContact}
-                className="btn-secondary"
-              >
+              <button onClick={scrollToContact} className="btn-secondary">
                 Start a project
               </button>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -84,7 +78,6 @@ const Hero = () => {
           Scroll to explore
         </span>
       </div>
-
     </section>
   );
 };
