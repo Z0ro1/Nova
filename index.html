@@ -1,0 +1,1736 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chimni Pakharu — Mumbai's Boldest Vada Pav</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ===== CSS VARIABLES ===== */
+      :root {
+        --charcoal: #1a1a1a;
+        --charcoal-dark: #0d0d0d;
+        --charcoal-mid: #222222;
+        --saffron: #ff9500;
+        --saffron-dark: #e07800;
+        --red: #c0392b;
+        --red-bright: #e74c3c;
+        --butter: #f4d03f;
+        --butter-light: #fae07a;
+        --cream: #f5f0e8;
+        --white: #ffffff;
+        --text-muted: #888888;
+        --card-bg: #1f1f1f;
+        --border: rgba(255, 149, 0, 0.15);
+        --font-display: "Montserrat", sans-serif;
+        --font-body: "Poppins", sans-serif;
+        --transition: 0.3s ease-in-out;
+        --transition-slow: 0.6s ease-in-out;
+        --radius: 12px;
+        --radius-pill: 999px;
+      }
+
+      /* ===== RESET ===== */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background-color: var(--charcoal-dark);
+        color: var(--white);
+        font-family: var(--font-body);
+        overflow-x: hidden;
+        cursor: default;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      ul {
+        list-style: none;
+      }
+
+      /* ===== SCROLL PROGRESS BAR ===== */
+      #progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        width: 0%;
+        background: linear-gradient(
+          90deg,
+          var(--saffron),
+          var(--butter),
+          var(--red)
+        );
+        z-index: 9999;
+        transition: width 0.1s linear;
+      }
+
+      /* ===== LOADER ===== */
+      #loader {
+        position: fixed;
+        inset: 0;
+        background: var(--charcoal-dark);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        transition:
+          opacity 0.6s ease,
+          visibility 0.6s ease;
+      }
+      #loader.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .loader-logo {
+        font-family: var(--font-display);
+        font-size: 2.2rem;
+        font-weight: 900;
+        letter-spacing: -1px;
+        color: var(--white);
+        margin-bottom: 2rem;
+      }
+      .loader-logo span {
+        color: var(--saffron);
+      }
+      .loader-bar-wrap {
+        width: 200px;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-pill);
+        overflow: hidden;
+      }
+      .loader-bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--saffron), var(--butter));
+        border-radius: var(--radius-pill);
+        animation: loadProgress 1.8s ease-in-out forwards;
+      }
+      @keyframes loadProgress {
+        0% {
+          width: 0%;
+        }
+        60% {
+          width: 80%;
+        }
+        100% {
+          width: 100%;
+        }
+      }
+
+      /* ===== NAVBAR ===== */
+      #navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        padding: 1.4rem 5%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition:
+          background var(--transition),
+          box-shadow var(--transition),
+          padding var(--transition);
+      }
+      #navbar.scrolled {
+        background: rgba(13, 13, 13, 0.97);
+        box-shadow: 0 2px 30px rgba(0, 0, 0, 0.5);
+        padding: 0.9rem 5%;
+        backdrop-filter: blur(12px);
+      }
+      .nav-logo {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        color: var(--white);
+      }
+      .nav-logo span {
+        color: var(--saffron);
+      }
+      .nav-links {
+        display: flex;
+        gap: 2.5rem;
+        align-items: center;
+      }
+      .nav-links a {
+        font-family: var(--font-display);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.85);
+        position: relative;
+        transition: color var(--transition);
+      }
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        width: 0%;
+        height: 2px;
+        background: var(--saffron);
+        border-radius: var(--radius-pill);
+        transition: width var(--transition);
+      }
+      .nav-links a:hover {
+        color: var(--saffron);
+      }
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .sound-toggle {
+        background: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: var(--white);
+        padding: 0.5rem 0.8rem;
+        border-radius: var(--radius-pill);
+        cursor: pointer;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        font-family: var(--font-display);
+        transition:
+          border-color var(--transition),
+          color var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .sound-toggle:hover {
+        border-color: var(--saffron);
+        color: var(--saffron);
+      }
+      .sound-icon {
+        font-size: 1rem;
+      }
+      .cart-btn {
+        background: var(--saffron);
+        color: var(--charcoal-dark);
+        border: none;
+        padding: 0.5rem 1.1rem;
+        border-radius: var(--radius-pill);
+        cursor: pointer;
+        font-family: var(--font-display);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition:
+          background var(--transition),
+          transform var(--transition);
+      }
+      .cart-btn:hover {
+        background: var(--butter);
+        transform: scale(1.04);
+      }
+      .cart-count {
+        background: var(--red);
+        color: var(--white);
+        font-size: 0.65rem;
+        font-weight: 700;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .hamburger span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: var(--white);
+        border-radius: 2px;
+        transition: var(--transition);
+      }
+
+      /* ===== HERO ===== */
+      #hero {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .hero-parallax-bg {
+        position: absolute;
+        inset: -10%;
+        background:
+          radial-gradient(
+            ellipse at 20% 50%,
+            rgba(192, 57, 43, 0.18) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse at 80% 30%,
+            rgba(255, 149, 0, 0.15) 0%,
+            transparent 50%
+          ),
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.012) 2px,
+            rgba(255, 255, 255, 0.012) 4px
+          ),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"),
+          #0d0d0d;
+        background-size:
+          cover,
+          cover,
+          auto,
+          300px 300px,
+          cover;
+        will-change: transform;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 4rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 5%;
+        width: 100%;
+      }
+      .hero-text {
+        animation: heroFadeIn 1s 2s ease-in-out both;
+      }
+      .hero-badge {
+        display: inline-block;
+        background: rgba(255, 149, 0, 0.15);
+        border: 1px solid rgba(255, 149, 0, 0.4);
+        color: var(--saffron);
+        font-family: var(--font-display);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        padding: 0.4rem 1rem;
+        border-radius: var(--radius-pill);
+        margin-bottom: 1.5rem;
+      }
+      .hero-title {
+        font-family: var(--font-display);
+        font-size: clamp(2.4rem, 5vw, 4.2rem);
+        font-weight: 900;
+        line-height: 1.05;
+        letter-spacing: -1.5px;
+        margin-bottom: 1.2rem;
+      }
+      .hero-title em {
+        font-style: normal;
+        color: var(--saffron);
+      }
+      .hero-sub {
+        font-size: 1.15rem;
+        color: rgba(255, 255, 255, 0.6);
+        letter-spacing: 0.12em;
+        margin-bottom: 2.5rem;
+        font-weight: 300;
+      }
+      .hero-sub span {
+        color: var(--butter);
+        font-weight: 600;
+      }
+      .hero-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        background: linear-gradient(135deg, var(--saffron), var(--red));
+        color: var(--white);
+        font-family: var(--font-display);
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        padding: 1rem 2.2rem;
+        border-radius: var(--radius-pill);
+        border: none;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform var(--transition),
+          box-shadow var(--transition);
+        text-transform: uppercase;
+      }
+      .hero-cta::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateX(-100%) skewX(-15deg);
+        transition: transform 0.5s ease;
+      }
+      .hero-cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(255, 149, 0, 0.35);
+      }
+      .hero-cta:hover::before {
+        transform: translateX(200%) skewX(-15deg);
+      }
+      .hero-cta-arrow {
+        font-size: 1.1rem;
+        transition: transform var(--transition);
+      }
+      .hero-cta:hover .hero-cta-arrow {
+        transform: translateX(4px);
+      }
+      .hero-visual {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: heroFadeIn 1s 2.3s ease-in-out both;
+      }
+      .hero-glow {
+        position: absolute;
+        width: 450px;
+        height: 450px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 149, 0, 0.22) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        animation: pulseGlow 4s ease-in-out infinite;
+      }
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 0.7;
+        }
+      }
+      .hero-food-img {
+        position: relative;
+        z-index: 2;
+        width: 420px;
+        height: 420px;
+        background: radial-gradient(
+          circle at 45% 55%,
+          #3a2a10 0%,
+          #1a0f05 100%
+        );
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12rem;
+        box-shadow:
+          0 30px 80px rgba(0, 0, 0, 0.6),
+          0 0 60px rgba(255, 149, 0, 0.15);
+        border: 1px solid rgba(255, 149, 0, 0.12);
+        animation: float 6s ease-in-out infinite;
+        overflow: hidden;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+      .hero-food-emoji {
+        font-size: 9rem;
+        filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+      }
+
+      /* Steam animation */
+      .steam-container {
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 18px;
+        z-index: 5;
+      }
+      .steam {
+        width: 8px;
+        height: 60px;
+        background: linear-gradient(
+          to top,
+          rgba(255, 255, 255, 0.35),
+          transparent
+        );
+        border-radius: 50% 50% 0 0;
+        filter: blur(4px);
+        animation: steam 2.5s ease-in-out infinite;
+      }
+      .steam:nth-child(2) {
+        animation-delay: 0.6s;
+        animation-duration: 3s;
+      }
+      .steam:nth-child(3) {
+        animation-delay: 1.2s;
+        animation-duration: 2.8s;
+      }
+      @keyframes steam {
+        0% {
+          transform: scaleX(1) translateY(0);
+          opacity: 0;
+        }
+        20% {
+          opacity: 1;
+        }
+        100% {
+          transform: scaleX(1.5) translateY(-80px);
+          opacity: 0;
+        }
+      }
+      @keyframes heroFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .scroll-indicator {
+        position: absolute;
+        bottom: 2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 0.7rem;
+        font-family: var(--font-display);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        animation: fadeInUp 1s 3s both;
+      }
+      .scroll-arrow {
+        width: 24px;
+        height: 24px;
+        border-right: 2px solid rgba(255, 255, 255, 0.3);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        transform: rotate(45deg);
+        animation: scrollBounce 2s ease-in-out infinite;
+      }
+      @keyframes scrollBounce {
+        0%,
+        100% {
+          transform: rotate(45deg) translateY(0);
+        }
+        50% {
+          transform: rotate(45deg) translateY(6px);
+        }
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+
+      /* ===== SECTION SHARED ===== */
+      section {
+        padding: 7rem 5%;
+      }
+      .section-label {
+        font-family: var(--font-display);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--saffron);
+        margin-bottom: 0.8rem;
+      }
+      .section-title {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        font-weight: 900;
+        letter-spacing: -1px;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+      }
+      .section-sub {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.5);
+        max-width: 480px;
+      }
+
+      /* ===== PRODUCTS SECTION ===== */
+      #menu {
+        background: var(--charcoal-dark);
+      }
+      .menu-header {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+      .menu-header .section-sub {
+        margin: 0 auto;
+      }
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+        gap: 1.8rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .product-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        transition:
+          transform 0.4s ease-in-out,
+          box-shadow 0.4s ease-in-out,
+          border-color 0.4s ease-in-out;
+        cursor: pointer;
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      .product-card.revealed {
+        animation: cardReveal 0.6s ease-in-out forwards;
+      }
+      @keyframes cardReveal {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .product-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow:
+          0 25px 60px rgba(0, 0, 0, 0.5),
+          0 0 40px rgba(255, 149, 0, 0.12);
+        border-color: rgba(255, 149, 0, 0.4);
+      }
+      .card-image {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(135deg, #2a1a05 0%, #1a0d02 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5.5rem;
+        position: relative;
+        overflow: hidden;
+        transition: background 0.4s ease;
+      }
+      .card-image::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          transparent 40%,
+          rgba(31, 31, 31, 0.8)
+        );
+      }
+      .product-card:hover .card-image {
+        background: linear-gradient(135deg, #3a2a10 0%, #2a1a05 100%);
+      }
+      .card-tag {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: var(--red);
+        color: var(--white);
+        font-family: var(--font-display);
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        padding: 0.3rem 0.7rem;
+        border-radius: var(--radius-pill);
+        text-transform: uppercase;
+        z-index: 2;
+      }
+      .card-body {
+        padding: 1.5rem;
+      }
+      .card-name {
+        font-family: var(--font-display);
+        font-size: 1.05rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.3px;
+      }
+      .card-desc {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.5);
+        line-height: 1.6;
+        margin-bottom: 1.2rem;
+      }
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .card-price {
+        font-family: var(--font-display);
+        font-size: 1.3rem;
+        font-weight: 900;
+        color: var(--saffron);
+      }
+      .card-price sup {
+        font-size: 0.7rem;
+        vertical-align: super;
+      }
+      .add-btn {
+        background: transparent;
+        border: 1.5px solid var(--saffron);
+        color: var(--saffron);
+        font-family: var(--font-display);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 0.55rem 1.2rem;
+        border-radius: var(--radius-pill);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition:
+          color var(--transition),
+          background var(--transition);
+      }
+      .add-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--saffron);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform var(--transition);
+      }
+      .add-btn:hover {
+        color: var(--charcoal-dark);
+      }
+      .add-btn:hover::before {
+        transform: scaleX(1);
+      }
+      .add-btn span {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ===== SUBSCRIPTION SECTION ===== */
+      #subscription {
+        position: relative;
+        background: linear-gradient(
+          135deg,
+          #1a0800 0%,
+          #1a1000 50%,
+          #0d1a00 100%
+        );
+        text-align: center;
+        overflow: hidden;
+        padding: 8rem 5%;
+      }
+      .sub-bg-overlay {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse at 30% 50%,
+            rgba(255, 149, 0, 0.1) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse at 70% 50%,
+            rgba(192, 57, 43, 0.1) 0%,
+            transparent 60%
+          );
+        pointer-events: none;
+      }
+      /* Floating spice particles */
+      .particles-container {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .particle {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0;
+        animation: particleFloat linear infinite;
+      }
+      @keyframes particleFloat {
+        0% {
+          transform: translateY(110%) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.6;
+        }
+        90% {
+          opacity: 0.4;
+        }
+        100% {
+          transform: translateY(-20%) rotate(720deg);
+          opacity: 0;
+        }
+      }
+      .sub-content {
+        position: relative;
+        z-index: 2;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      .sub-eyebrow {
+        display: inline-block;
+        font-family: var(--font-display);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--butter);
+        margin-bottom: 1.5rem;
+        background: rgba(244, 208, 63, 0.12);
+        border: 1px solid rgba(244, 208, 63, 0.3);
+        padding: 0.4rem 1rem;
+        border-radius: var(--radius-pill);
+      }
+      .sub-title {
+        font-family: var(--font-display);
+        font-size: clamp(2.4rem, 5vw, 4rem);
+        font-weight: 900;
+        letter-spacing: -1.5px;
+        margin-bottom: 1rem;
+        line-height: 1.05;
+      }
+      .sub-title span {
+        color: var(--saffron);
+      }
+      .sub-desc {
+        font-size: 1.05rem;
+        color: rgba(255, 255, 255, 0.55);
+        margin-bottom: 3rem;
+      }
+      .sub-features {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 3rem;
+      }
+      .sub-feature {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 0.7rem 1.3rem;
+        border-radius: var(--radius-pill);
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.75);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .sub-feature .check {
+        color: var(--saffron);
+        font-weight: 700;
+      }
+      .sub-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        background: linear-gradient(135deg, var(--butter), var(--saffron));
+        color: var(--charcoal-dark);
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 900;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        padding: 1.1rem 2.8rem;
+        border-radius: var(--radius-pill);
+        border: none;
+        cursor: pointer;
+        transition:
+          transform var(--transition),
+          box-shadow var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+      .sub-cta:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 50px rgba(255, 149, 0, 0.4);
+      }
+      .sub-price-note {
+        margin-top: 1.2rem;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.3);
+      }
+
+      /* ===== ABOUT SECTION ===== */
+      #about {
+        background: #111111;
+      }
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6rem;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .about-image-wrap {
+        position: relative;
+      }
+      .about-image {
+        width: 100%;
+        aspect-ratio: 4/5;
+        background: linear-gradient(135deg, #2a1505 0%, #1a0d02 100%);
+        border-radius: var(--radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9rem;
+        border: 1px solid rgba(255, 149, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+      }
+      .about-image::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at 50% 80%,
+          rgba(255, 149, 0, 0.15) 0%,
+          transparent 70%
+        );
+      }
+      .about-accent {
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, var(--saffron), var(--red));
+        border-radius: var(--radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-display);
+        font-size: 0.7rem;
+        font-weight: 900;
+        text-align: center;
+        line-height: 1.3;
+        color: var(--white);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      }
+      .about-text {
+      }
+      .about-text .section-label {
+        display: block;
+      }
+      .about-title {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 3.5vw, 3rem);
+        font-weight: 900;
+        letter-spacing: -1px;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+      }
+      .about-title em {
+        font-style: normal;
+        color: var(--saffron);
+      }
+      .about-para {
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.9;
+        margin-bottom: 1rem;
+      }
+      .about-stats {
+        display: flex;
+        gap: 3rem;
+        margin-top: 2.5rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .stat {
+      }
+      .stat-num {
+        font-family: var(--font-display);
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: var(--saffron);
+        line-height: 1;
+        margin-bottom: 0.3rem;
+      }
+      .stat-label {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      /* ===== REVEAL ANIMATIONS ===== */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.7s ease-in-out,
+          transform 0.7s ease-in-out;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal-left {
+        opacity: 0;
+        transform: translateX(-50px);
+        transition:
+          opacity 0.7s ease-in-out,
+          transform 0.7s ease-in-out;
+      }
+      .reveal-left.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      .reveal-right {
+        opacity: 0;
+        transform: translateX(50px);
+        transition:
+          opacity 0.7s ease-in-out,
+          transform 0.7s ease-in-out;
+      }
+      .reveal-right.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      /* ===== FOOTER ===== */
+      footer {
+        background: var(--charcoal-dark);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 4rem 5% 2rem;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 4rem;
+        max-width: 1200px;
+        margin: 0 auto 3rem;
+      }
+      .footer-brand {
+      }
+      .footer-logo {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 900;
+        margin-bottom: 1rem;
+      }
+      .footer-logo span {
+        color: var(--saffron);
+      }
+      .footer-tagline {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.35);
+        line-height: 1.7;
+        max-width: 260px;
+        margin-bottom: 1.5rem;
+      }
+      .social-links {
+        display: flex;
+        gap: 0.8rem;
+      }
+      .social-link {
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: var(--radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        transition:
+          background var(--transition),
+          border-color var(--transition),
+          transform var(--transition);
+      }
+      .social-link:hover {
+        background: var(--saffron);
+        border-color: var(--saffron);
+        transform: translateY(-3px);
+      }
+      .footer-col h4 {
+        font-family: var(--font-display);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 1.2rem;
+      }
+      .footer-col ul li {
+        margin-bottom: 0.7rem;
+      }
+      .footer-col ul li a {
+        font-size: 0.88rem;
+        color: rgba(255, 255, 255, 0.45);
+        transition: color var(--transition);
+      }
+      .footer-col ul li a:hover {
+        color: var(--saffron);
+      }
+      .footer-address {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.35);
+        line-height: 1.7;
+      }
+      .footer-bottom {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .footer-copy {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.2);
+      }
+      .footer-copy span {
+        color: var(--saffron);
+      }
+      .footer-made {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.15);
+      }
+
+      /* ===== MOBILE NAV ===== */
+      .mobile-nav {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(13, 13, 13, 0.99);
+        z-index: 998;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        backdrop-filter: blur(20px);
+      }
+      .mobile-nav.open {
+        display: flex;
+      }
+      .mobile-nav a {
+        font-family: var(--font-display);
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -1px;
+        color: rgba(255, 255, 255, 0.7);
+        transition: color var(--transition);
+      }
+      .mobile-nav a:hover {
+        color: var(--saffron);
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 1024px) {
+        .hero-food-img {
+          width: 340px;
+          height: 340px;
+        }
+        .about-grid {
+          gap: 3rem;
+        }
+      }
+      @media (max-width: 768px) {
+        .nav-links,
+        .nav-actions .sound-toggle {
+          display: none;
+        }
+        .hamburger {
+          display: flex;
+        }
+        .hero-content {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+        .hero-visual {
+          order: -1;
+        }
+        .hero-food-img {
+          width: 260px;
+          height: 260px;
+          font-size: 6rem;
+        }
+        .hero-glow {
+          width: 300px;
+          height: 300px;
+        }
+        .hero-cta {
+          width: 100%;
+          justify-content: center;
+        }
+        .about-grid {
+          grid-template-columns: 1fr;
+        }
+        .about-image {
+          aspect-ratio: 1/1;
+          font-size: 6rem;
+        }
+        .about-accent {
+          display: none;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+        section {
+          padding: 5rem 5%;
+        }
+      }
+      @media (max-width: 480px) {
+        .products-grid {
+          grid-template-columns: 1fr;
+        }
+        .sub-features {
+          flex-direction: column;
+          align-items: center;
+        }
+        .about-stats {
+          gap: 2rem;
+        }
+        .footer-bottom {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- PROGRESS BAR -->
+    <div id="progress-bar"></div>
+
+    <!-- LOADER -->
+    <div id="loader">
+      <div class="loader-logo">ShindeMama <span>vadewale</span></div>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar"></div>
+      </div>
+    </div>
+
+    <!-- MOBILE NAV OVERLAY -->
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#hero" onclick="closeMobileNav()">Home</a>
+      <a href="#menu" onclick="closeMobileNav()">Menu</a>
+      <a href="#subscription" onclick="closeMobileNav()">Subscription</a>
+      <a href="#about" onclick="closeMobileNav()">About</a>
+      <a href="#contact" onclick="closeMobileNav()">Contact</a>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav id="navbar">
+      <div class="nav-logo">Shinde Mama<span> Vadewale</span></div>
+      <ul class="nav-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#subscription">Subscription</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="sound-toggle" id="soundToggle">
+          <span class="sound-icon" id="soundIcon">🔇</span> Sound
+        </button>
+        <button class="cart-btn" id="cartBtn">
+          🛒 Cart <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="hamburger" id="hamburger" onclick="toggleMobileNav()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="hero-parallax-bg" id="parallaxBg"></div>
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="hero-badge">🌶 Est. 2024 · Pune, India</div>
+          <h1 class="hero-title">
+            Pune's <em>Boldest</em><br />Vada Pav<br />Experience
+          </h1>
+          <p class="hero-sub"><span>Butter. Spice. Fire.</span> Repeat.</p>
+          <a href="#menu" class="hero-cta">
+            Explore Menu
+            <span class="hero-cta-arrow">→</span>
+          </a>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-glow"></div>
+          <div class="hero-food-img">
+            <div class="steam-container">
+              <div class="steam"></div>
+              <div class="steam"></div>
+              <div class="steam"></div>
+            </div>
+            <span class="hero-food-emoji">🍔</span>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span>Scroll</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS / MENU -->
+    <section id="menu">
+      <div class="menu-header reveal">
+        <div class="section-label">Our Offerings</div>
+        <h2 class="section-title">Street Legends</h2>
+        <p class="section-sub">
+          Six masterpieces from the streets of Mumbai, elevated for the bold.
+        </p>
+      </div>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="card-image">
+            🍔
+            <div class="card-tag">Bestseller</div>
+          </div>
+          <div class="card-body">
+            <div class="card-name">Classic Mumbai Vada Pav</div>
+            <p class="card-desc">
+              The OG. Crispy batata vada nestled in soft ladi pav, slathered
+              with garlic chutney and green chilli.
+            </p>
+            <div class="card-footer">
+              <div class="card-price"><sup>₹</sup>49</div>
+              <button class="add-btn" onclick="addToCart()">
+                <span>+ Add</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="card-image">
+            🧀
+            <div class="card-tag">🔥 Trending</div>
+          </div>
+          <div class="card-body">
+            <div class="card-name">Cheese Burst Vada Pav</div>
+            <p class="card-desc">
+              Double-fried vada with molten processed cheese oozing inside. Pure
+              indulgence on every bite.
+            </p>
+            <div class="card-footer">
+              <div class="card-price"><sup>₹</sup>79</div>
+              <button class="add-btn" onclick="addToCart()">
+                <span>+ Add</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="card-image">
+            🌶
+            <div class="card-tag">Spicy</div>
+          </div>
+          <div class="card-body">
+            <div class="card-name">Schezwan Vada Pav</div>
+            <p class="card-desc">
+              Indo-Chinese fire in every bite. Schezwan chutney meets crispy
+              vada for an unforgettable fusion.
+            </p>
+            <div class="card-footer">
+              <div class="card-price"><sup>₹</sup>69</div>
+              <button class="add-btn" onclick="addToCart()">
+                <span>+ Add</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="card-image">
+            🫙
+            <div class="card-tag">New</div>
+          </div>
+          <div class="card-body">
+            <div class="card-name">Butter Pav Bhaji Slider</div>
+            <p class="card-desc">
+              Slow-cooked spiced mash loaded with butter, piled high on a
+              toasted slider bun. Street royalty.
+            </p>
+            <div class="card-footer">
+              <div class="card-price"><sup>₹</sup>89</div>
+              <button class="add-btn" onclick="addToCart()">
+                <span>+ Add</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="card-image">
+            🥜
+            <div class="card-tag">Kutchi Style</div>
+          </div>
+          <div class="card-body">
+            <div class="card-name">Kutchi Dabeli Pav</div>
+            <p class="card-desc">
+              Authentic Kutchi spiced potato filling topped with pomegranate,
+              peanuts, and sev. A symphony.
+            </p>
+            <div class="card-footer">
+              <div class="card-price"><sup>₹</sup>59</div>
+              <button class="add-btn" onclick="addToCart()">
+                <span>+ Add</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="card-image">
+            🧈
+            <div class="card-tag">Premium</div>
+          </div>
+          <div class="card-body">
+            <div class="card-name">Butter Pav Stack</div>
+            <p class="card-desc">
+              Triple-stacked buttered pav with masala fillings, crispy sev and a
+              drizzle of house special chutney.
+            </p>
+            <div class="card-footer">
+              <div class="card-price"><sup>₹</sup>99</div>
+              <button class="add-btn" onclick="addToCart()">
+                <span>+ Add</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUBSCRIPTION -->
+    <section id="subscription">
+      <div class="sub-bg-overlay"></div>
+      <div class="particles-container" id="particlesContainer"></div>
+      <div class="sub-content reveal">
+        <div class="sub-eyebrow">Monthly Subscription</div>
+        <h2 class="sub-title">Join the <span>Pav Club</span></h2>
+        <p class="sub-desc">
+          Get 20 Vada Pav delivered every month. Fresh, bold, and blazing hot.
+        </p>
+        <div class="sub-features">
+          <div class="sub-feature">
+            <span class="check">✔</span> Priority delivery
+          </div>
+          <div class="sub-feature">
+            <span class="check">✔</span> Special festival flavors
+          </div>
+          <div class="sub-feature">
+            <span class="check">✔</span> 10% member discount
+          </div>
+          <div class="sub-feature">
+            <span class="check">✔</span> Free chutney refill pack
+          </div>
+        </div>
+        <button class="sub-cta">Subscribe Now 🌶</button>
+        <p class="sub-price-note">
+          Starting at ₹799/month · Cancel anytime · No hidden fees
+        </p>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="about-grid">
+        <div class="about-image-wrap reveal-left">
+          <div class="about-image">🏙</div>
+          <div class="about-accent">10+ Years<br />On The<br />Streets</div>
+        </div>
+        <div class="about-text reveal-right">
+          <span class="section-label">Our Story</span>
+          <h2 class="about-title">
+            Born on Pune Streets.<br />Built for <em>Legends</em>.
+          </h2>
+          <p class="about-para">
+            shide mama vadewale (chimney sparrow) started as a single cart outside
+            Dadar station in 2014. Our founder, inspired by the hustle of
+            Mumbai's street food culture, decided that the humble vada pav
+            deserved a premium platform.
+          </p>
+          <p class="about-para">
+            We source every ingredient locally — from the ladi pav made fresh
+            each morning by Irani bakeries to the garlic and green chillis
+            picked from local farms. Every vada pav is assembled by hand, with
+            love, fire, and a whole lot of butter.
+          </p>
+          <p class="about-para">
+            Today, shide mama vadewale serves over 5,000 vada pavs daily across
+            Mumbai. Because real street food doesn't need a fancy address — it
+            just needs to hit different.
+          </p>
+          <div class="about-stats">
+            <div class="stat">
+              <div class="stat-num">5K+</div>
+              <div class="stat-label">Daily Orders</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num">12</div>
+              <div class="stat-label">City Locations</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num">10yr</div>
+              <div class="stat-label">Legacy</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo"> S <span></span></div>
+          <p class="footer-tagline">
+            Pune's boldest street food brand. Every bite tells a story of
+            spice, butter, and fire.
+          </p>
+          <div class="social-links">
+            <a href="#" class="social-link" title="Instagram">📸</a>
+            <a href="#" class="social-link" title="WhatsApp">💬</a>
+            <a href="#" class="social-link" title="YouTube">▶</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#menu">Our Menu</a></li>
+            <li><a href="#subscription">Pav Club</a></li>
+            <li><a href="#about">Our Story</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Find Us</h4>
+          <p class="footer-address">
+            Shinde mama Vadewale<br />
+            Pune Hinjawadi<br />
+            423238<br />
+            Maharashtra, India<br /><br />
+            📞 +91 98*****23<br />
+            ✉ hello@shindemamaVadewale.in
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          © 2026 <span>Shinde mama Vadewale</span>. All rights reserved.
+        </p>
+        <p class="footer-made">Made with 🧈 in Pune</p>
+      </div>
+    </footer>
+
+    <script>
+      // ===== LOADER =====
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          document.getElementById("loader").classList.add("hidden");
+        }, 2200);
+      });
+
+      // ===== PROGRESS BAR =====
+      window.addEventListener("scroll", () => {
+        const scrollTop = window.scrollY;
+        const docHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const pct = (scrollTop / docHeight) * 100;
+        document.getElementById("progress-bar").style.width = pct + "%";
+      });
+
+      // ===== NAVBAR SCROLL =====
+      window.addEventListener("scroll", () => {
+        const nav = document.getElementById("navbar");
+        nav.classList.toggle("scrolled", window.scrollY > 60);
+      });
+
+      // ===== PARALLAX HERO =====
+      window.addEventListener("scroll", () => {
+        const bg = document.getElementById("parallaxBg");
+        const offset = window.scrollY * 0.4;
+        bg.style.transform = "translateY(" + offset + "px)";
+      });
+
+      // ===== SCROLL REVEAL (IntersectionObserver) =====
+      const revealEls = document.querySelectorAll(
+        ".reveal, .reveal-left, .reveal-right",
+      );
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+      revealEls.forEach((el) => observer.observe(el));
+
+      // ===== STAGGERED PRODUCT CARDS =====
+      const cards = document.querySelectorAll(".product-card");
+      const cardObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+              const card = entry.target;
+              const delay = Array.from(cards).indexOf(card) * 120;
+              setTimeout(() => card.classList.add("revealed"), delay);
+              cardObserver.unobserve(card);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      cards.forEach((card) => cardObserver.observe(card));
+
+      // ===== CART COUNTER =====
+      let cartItems = 0;
+      function addToCart() {
+        cartItems++;
+        document.getElementById("cartCount").textContent = cartItems;
+        const count = document.getElementById("cartCount");
+        count.style.transform = "scale(1.5)";
+        setTimeout(() => (count.style.transform = "scale(1)"), 300);
+      }
+
+      // ===== SOUND TOGGLE (visual only) =====
+      let soundOn = false;
+      document.getElementById("soundToggle").addEventListener("click", () => {
+        soundOn = !soundOn;
+        document.getElementById("soundIcon").textContent = soundOn
+          ? "🔊"
+          : "🔇";
+      });
+
+      // ===== MOBILE NAV =====
+      function toggleMobileNav() {
+        document.getElementById("mobileNav").classList.toggle("open");
+      }
+      function closeMobileNav() {
+        document.getElementById("mobileNav").classList.remove("open");
+      }
+
+      // ===== FLOATING PARTICLES =====
+      (function createParticles() {
+        const container = document.getElementById("particlesContainer");
+        const colors = ["#FF9500", "#F4D03F", "#C0392B", "#FAE07A", "#E74C3C"];
+        const count = 30;
+        for (let i = 0; i < count; i++) {
+          const p = document.createElement("div");
+          p.className = "particle";
+          const size = Math.random() * 8 + 3;
+          const left = Math.random() * 100;
+          const dur = Math.random() * 12 + 8;
+          const delay = Math.random() * 10;
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          p.style.cssText = `
+        width:${size}px;
+        height:${size}px;
+        left:${left}%;
+        bottom:0;
+        background:${color};
+        animation-duration:${dur}s;
+        animation-delay:${delay}s;
+        opacity:0;
+      `;
+          container.appendChild(p);
+        }
+      })();
+
+      // ===== RIPPLE EFFECT ON BUTTONS =====
+      document.querySelectorAll(".hero-cta, .sub-cta").forEach((btn) => {
+        btn.addEventListener("click", function (e) {
+          const ripple = document.createElement("span");
+          const rect = this.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height);
+          ripple.style.cssText = `
+        position:absolute;
+        width:${size}px;height:${size}px;
+        left:${e.clientX - rect.left - size / 2}px;
+        top:${e.clientY - rect.top - size / 2}px;
+        background:rgba(255,255,255,0.25);
+        border-radius:50%;
+        transform:scale(0);
+        animation:ripple 0.6s ease-out;
+        pointer-events:none;
+      `;
+          document.head.insertAdjacentHTML(
+            "beforeend",
+            "<style>@keyframes ripple{to{transform:scale(4);opacity:0}}</style>",
+          );
+          this.style.position = "relative";
+          this.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 700);
+        });
+      });
+    </script>
+  </body>
+</html>
